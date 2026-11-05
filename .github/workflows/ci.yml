@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Линтеры, типы, unit-тесты, сборка
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Biome
+        run: pnpm check
+      - name: Steiger (FSD)
+        run: pnpm lint:fsd
+      - name: TypeScript
+        run: pnpm typecheck
+      - name: Unit-тесты
+        run: pnpm test
+      - name: Сборка
+        run: pnpm build
+        env:
+          VITE_SUPABASE_URL: http://127.0.0.1:54321
+          VITE_SUPABASE_PUBLISHABLE_KEY: ci-placeholder
+
+  database:
+    name: База — pgTAP и интеграционные тесты API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Запуск Supabase (миграции + сид)
+        run: pnpm db:start
+      - name: Тесты безопасности базы (pgTAP)
+        run: pnpm test:db
+      - name: Интеграционные тесты через API
+        run: |
+          eval "$(pnpm --silent supabase status -o env | sed 's/^/export /')"
+          SUPABASE_URL="$API_URL" SUPABASE_PUBLISHABLE_KEY="$PUBLISHABLE_KEY" pnpm test:integration
+      - name: Остановка Supabase
+        if: always()
+        run: pnpm supabase stop --no-backup
