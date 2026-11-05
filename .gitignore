@@ -7,3 +7,10 @@ dist
 *.log
 .vercel
 supabase/.temp
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+*.local
