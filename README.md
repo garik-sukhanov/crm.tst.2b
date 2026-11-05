@@ -6,7 +6,7 @@
 
 | Что                                | Где                                                  |
 | ---------------------------------- | ---------------------------------------------------- |
-| Приложение                         | _появится после деплоя на Netlify_                   |
+| Приложение                         | https://crm-stroy-tasks.netlify.app                  |
 | Репозиторий                        | https://github.com/garik-sukhanov/crm.tst.2b         |
 | Проверки (CI)                      | https://github.com/garik-sukhanov/crm.tst.2b/actions |
 | Миграции базы                      | [supabase/migrations](supabase/migrations)           |

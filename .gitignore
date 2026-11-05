@@ -15,3 +15,6 @@ supabase/.temp
 .idea
 *.local
 !.env.localdb
+
+# Local Netlify folder
+.netlify
