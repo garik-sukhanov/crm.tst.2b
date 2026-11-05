@@ -169,8 +169,9 @@ export const BoardColumns = ({
         },
       }}
     >
-      <div className="-mx-4 overflow-x-auto px-4 pb-2 md:-mx-6 md:px-6">
-        <div className="grid min-w-max auto-cols-[minmax(232px,1fr)] grid-flow-col gap-3 xl:min-w-0">
+      {/* Доска занимает всю оставшуюся высоту экрана: колонки тянутся до низа. */}
+      <div className="-mx-4 flex flex-1 flex-col overflow-x-auto px-4 pb-2 md:-mx-6 md:px-6">
+        <div className="grid min-w-max flex-1 auto-cols-[minmax(232px,1fr)] grid-flow-col gap-3 xl:min-w-0">
           {TASK_STATUSES.map((status) => (
             <Column
               key={status}

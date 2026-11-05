@@ -58,7 +58,7 @@ export const AppShell = () => {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 pt-5 pb-[calc(5rem+env(safe-area-inset-bottom))] md:px-6 md:pt-8 md:pb-12">
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-5 pb-[calc(5rem+env(safe-area-inset-bottom))] md:px-6 md:pt-8 md:pb-12">
         <Outlet />
       </main>
 
