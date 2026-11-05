@@ -4,6 +4,6 @@ export const routes = {
   objects: '/objects',
   object: (id: string) => `/objects/${id}`,
   task: (id: string) => `/tasks/${id}`,
-  myTasks: '/my-tasks',
+  tasks: '/tasks',
   statistics: '/statistics',
 } as const;

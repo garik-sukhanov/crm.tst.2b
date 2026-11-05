@@ -2,7 +2,7 @@ import { useGate, useUnit } from 'effector-react';
 import { ChevronLeftIcon, PencilIcon, Trash2Icon } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
-import { canManage, getAvailableTransitions, TaskCode, TaskStatusBadge } from '@/entities/task';
+import { canManage, getLockReason, TaskCode, TaskStatusBadge } from '@/entities/task';
 import { useViewer } from '@/entities/viewer';
 import { TaskActions } from '@/features/change-task-status';
 import { DeleteTaskDialog, TaskFormDialog } from '@/features/task-editor';
@@ -60,7 +60,7 @@ export const TaskPage = () => {
     );
   }
 
-  const hasActions = getAvailableTransitions(viewer, task).length > 0;
+  const lockReason = getLockReason(viewer, task);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,420px)] lg:gap-10">
@@ -82,7 +82,11 @@ export const TaskPage = () => {
           </h1>
         </div>
 
-        {hasActions && (
+        {lockReason ? (
+          <p className="rounded-xl border border-dashed px-4 py-3 text-sm text-muted-foreground">
+            {lockReason}
+          </p>
+        ) : (
           <div className="rounded-xl border bg-card p-3">
             <TaskActions
               task={task}

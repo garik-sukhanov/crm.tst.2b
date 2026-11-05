@@ -7,12 +7,13 @@ import {
   PlusIcon,
   Trash2Icon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
-import { canManage } from '@/entities/task';
+import { applyTaskFilters, canManage, getFilterOptions } from '@/entities/task';
 import { useViewer } from '@/entities/viewer';
 import { DeleteObjectDialog, ObjectFormDialog } from '@/features/object-editor';
 import { TaskFormDialog } from '@/features/task-editor';
+import { TaskFilterBar, useTaskFilters } from '@/features/task-filters';
 import { routes } from '@/shared/config';
 import { Button } from '@/shared/ui/button';
 import {
@@ -43,6 +44,9 @@ export const ObjectBoardPage = () => {
     tasksQuery.start,
   ]);
   const [creatingTask, setCreatingTask] = useState(false);
+  const [filters, setFilters, resetFilters] = useTaskFilters();
+  const options = useMemo(() => getFilterOptions(tasks), [tasks]);
+  const visible = useMemo(() => applyTaskFilters(tasks, filters), [tasks, filters]);
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -69,7 +73,7 @@ export const ObjectBoardPage = () => {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-6">
+    <div className="flex flex-1 flex-col gap-5">
       {object ? (
         <PageHeader
           eyebrow={back}
@@ -143,10 +147,21 @@ export const ObjectBoardPage = () => {
           action={manager && <Button onClick={() => setCreatingTask(true)}>Добавить задачу</Button>}
         />
       ) : (
-        <TaskBoard
-          tasks={tasks}
-          preferred={manager ? ['review', 'rework'] : ['rework', 'new', 'in_progress']}
-        />
+        <>
+          <TaskFilterBar
+            filters={filters}
+            onChange={setFilters}
+            onReset={resetFilters}
+            assignees={options.assignees}
+            objects={options.objects}
+            shown={visible.length}
+            total={tasks.length}
+          />
+          <TaskBoard
+            tasks={visible}
+            preferred={manager ? ['review', 'rework'] : ['rework', 'new', 'in_progress']}
+          />
+        </>
       )}
 
       {manager && object && (

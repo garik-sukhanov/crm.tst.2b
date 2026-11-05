@@ -16,6 +16,9 @@ export {
 export type { TaskStatus, TaskTransition } from './config/status';
 export { TASK_STATUS_META, TASK_STATUSES, TASK_TRANSITIONS } from './config/status';
 export { applyStatus, groupByStatus } from './lib/apply-move';
+export type { FilterOption, TaskFilters, TaskSort } from './lib/filter';
+export { applyTaskFilters, EMPTY_FILTERS, getFilterOptions, isFiltered } from './lib/filter';
+export { getLockReason } from './lib/lock-reason';
 export type { Actor, TransitionSubject } from './lib/transitions';
 export {
   canManage,

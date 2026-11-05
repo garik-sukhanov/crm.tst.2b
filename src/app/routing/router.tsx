@@ -1,9 +1,9 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router';
 import { LoginPage } from '@/pages/login';
 import { routes } from '@/shared/config';
 import { AppShell } from '@/widgets/app-shell';
-import { ExecutorOnly, HomeRedirect, RedirectIfAuthenticated, RequireAuth } from './guards';
+import { HomeRedirect, RedirectIfAuthenticated, RequireAuth } from './guards';
 
 // Страницы грузятся по требованию: вход открывается быстро даже на слабом мобильном интернете.
 const ObjectsPage = lazy(() => import('@/pages/objects').then((m) => ({ default: m.ObjectsPage })));
@@ -11,9 +11,7 @@ const ObjectBoardPage = lazy(() =>
   import('@/pages/object-board').then((m) => ({ default: m.ObjectBoardPage })),
 );
 const TaskPage = lazy(() => import('@/pages/task').then((m) => ({ default: m.TaskPage })));
-const MyTasksPage = lazy(() =>
-  import('@/pages/my-tasks').then((m) => ({ default: m.MyTasksPage })),
-);
+const TasksPage = lazy(() => import('@/pages/tasks').then((m) => ({ default: m.TasksPage })));
 const StatisticsPage = lazy(() =>
   import('@/pages/statistics').then((m) => ({ default: m.StatisticsPage })),
 );
@@ -42,10 +40,9 @@ const router = createBrowserRouter([
           { path: routes.objects, element: page(ObjectsPage) },
           { path: '/objects/:objectId', element: page(ObjectBoardPage) },
           { path: '/tasks/:taskId', element: page(TaskPage) },
-          {
-            element: <ExecutorOnly />,
-            children: [{ path: routes.myTasks, element: page(MyTasksPage) }],
-          },
+          { path: routes.tasks, element: page(TasksPage) },
+          // Старый адрес «Моих задач» — на общую доску задач.
+          { path: '/my-tasks', element: <Navigate to={routes.tasks} replace /> },
           { path: routes.statistics, element: page(StatisticsPage) },
           { path: '*', element: page(NotFoundPage) },
         ],

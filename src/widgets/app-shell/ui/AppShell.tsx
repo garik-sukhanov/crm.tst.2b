@@ -32,7 +32,7 @@ export const AppShell = () => {
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-30 border-b bg-background/90 pt-[env(safe-area-inset-top)] backdrop-blur supports-[backdrop-filter]:bg-background/75">
-        <div className="mx-auto flex h-14 w-full max-w-7xl items-center gap-6 px-4 md:px-6">
+        <div className="flex h-14 w-full items-center gap-6 px-4 md:px-6 lg:px-8">
           <Logo />
           <nav aria-label="Основная навигация" className="hidden items-center gap-1 md:flex">
             {items.map(({ to, label, icon: Icon }) => (
@@ -58,7 +58,7 @@ export const AppShell = () => {
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col px-4 pt-5 pb-[calc(5rem+env(safe-area-inset-bottom))] md:px-6 md:pt-8 md:pb-12">
+      <main className="flex w-full flex-1 flex-col px-4 pt-5 pb-[calc(5rem+env(safe-area-inset-bottom))] md:px-6 md:pt-8 md:pb-12 lg:px-8">
         <Outlet />
       </main>
 

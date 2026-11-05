@@ -51,10 +51,9 @@ export const TaskCard = ({
       </Link>
     </h3>
     {(showAssignee || showObject) && (
-      <div className="flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
-        {showAssignee && <span className="truncate">{task.assignee.fullName}</span>}
-        {showAssignee && showObject && <span aria-hidden>·</span>}
+      <div className="flex min-w-0 flex-col gap-0.5 text-xs text-muted-foreground">
         {showObject && <span className="truncate">{task.object.name}</span>}
+        {showAssignee && <span className="truncate">{task.assignee.fullName}</span>}
       </div>
     )}
     {actions && <div className="relative z-10">{actions}</div>}

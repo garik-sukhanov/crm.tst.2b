@@ -81,7 +81,7 @@ export const ObjectsPage = () => {
       {error && objects.length === 0 ? (
         <ErrorState message={(error as Error).message} onRetry={() => retry()} />
       ) : pending && objects.length === 0 ? (
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 min-[1920px]:grid-cols-5">
           {[0, 1, 2].map((i) => (
             <li key={i}>
               <Skeleton className="h-36 rounded-xl" />
@@ -99,7 +99,7 @@ export const ObjectsPage = () => {
           action={manager && <Button onClick={() => setCreating(true)}>Новый объект</Button>}
         />
       ) : (
-        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 min-[1920px]:grid-cols-5">
           {objects.map((object) => (
             <ObjectCard key={object.id} object={object} mine={!manager} />
           ))}

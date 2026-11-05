@@ -1,6 +1,7 @@
 import { useUnit } from 'effector-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
+  getLockReason,
   groupByStatus,
   TASK_STATUS_META,
   TASK_STATUSES,
@@ -8,6 +9,7 @@ import {
   TaskCard,
   type TaskStatus,
 } from '@/entities/task';
+import { useViewer } from '@/entities/viewer';
 import { $pendingTaskIds, TaskActions } from '@/features/change-task-status';
 import { cn } from '@/shared/lib/utils';
 
@@ -26,6 +28,7 @@ export const StatusTabs = ({
   showAssignee = true,
   preferred = [],
 }: Props) => {
+  const viewer = useViewer();
   const pendingIds = useUnit($pendingTaskIds);
   const groups = useMemo(() => groupByStatus(tasks), [tasks]);
   const initial =
@@ -83,7 +86,13 @@ export const StatusTabs = ({
             showObject={showObject}
             showAssignee={showAssignee}
             pending={pendingIds.has(task.id)}
-            actions={<TaskActions task={task} size="lg" className="[&>button]:flex-1" />}
+            actions={
+              getLockReason(viewer, task) ? (
+                <p className="text-xs text-muted-foreground">{getLockReason(viewer, task)}</p>
+              ) : (
+                <TaskActions task={task} size="lg" className="[&>button]:flex-1" />
+              )
+            }
           />
         ))}
         {visible.length === 0 && (

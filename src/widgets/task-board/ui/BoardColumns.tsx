@@ -16,6 +16,7 @@ import { useMemo, useState } from 'react';
 import {
   findTransition,
   getDropTargets,
+  getLockReason,
   groupByStatus,
   TASK_STATUS_META,
   TASK_STATUSES,
@@ -26,6 +27,7 @@ import {
 import { useViewer } from '@/entities/viewer';
 import { $pendingTaskIds, TaskActions, transitionRequested } from '@/features/change-task-status';
 import { cn } from '@/shared/lib/utils';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
 
 const DraggableCard = ({
   task,
@@ -38,12 +40,13 @@ const DraggableCard = ({
   showObject: boolean;
   showAssignee: boolean;
 }) => {
+  const viewer = useViewer();
   const pendingIds = useUnit($pendingTaskIds);
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: task.id,
     disabled: !draggable,
   });
-  return (
+  const card = (
     <div
       ref={setNodeRef}
       {...(draggable ? { ...attributes, ...listeners } : {})}
@@ -61,6 +64,18 @@ const DraggableCard = ({
         actions={<TaskActions task={task} size="sm" />}
       />
     </div>
+  );
+
+  // Карточку нельзя перетащить — объясняем почему.
+  const reason = draggable ? null : getLockReason(viewer, task);
+  if (!reason) return card;
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{card}</TooltipTrigger>
+      <TooltipContent side="top" className="max-w-60 text-center">
+        {reason}
+      </TooltipContent>
+    </Tooltip>
   );
 };
 
@@ -170,7 +185,7 @@ export const BoardColumns = ({
       }}
     >
       {/* Доска занимает всю оставшуюся высоту экрана: колонки тянутся до низа. */}
-      <div className="-mx-4 flex flex-1 flex-col overflow-x-auto px-4 pb-2 md:-mx-6 md:px-6">
+      <div className="-mx-4 flex flex-1 flex-col overflow-x-auto px-4 pb-2 md:-mx-6 md:px-6 lg:-mx-8 lg:px-8">
         <div className="grid min-w-max flex-1 auto-cols-[minmax(232px,1fr)] grid-flow-col gap-3 xl:min-w-0">
           {TASK_STATUSES.map((status) => (
             <Column

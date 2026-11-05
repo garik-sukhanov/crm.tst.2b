@@ -35,10 +35,5 @@ export const RedirectIfAuthenticated = () => {
 /** Стартовая страница по роли: исполнителю — его задачи, постановщику — объекты. */
 export const HomeRedirect = () => {
   const viewer = useUnit($viewer);
-  return <Navigate to={viewer?.role === 'executor' ? routes.myTasks : routes.objects} replace />;
-};
-
-export const ExecutorOnly = () => {
-  const viewer = useUnit($viewer);
-  return viewer?.role === 'executor' ? <Outlet /> : <Navigate to={routes.objects} replace />;
+  return <Navigate to={viewer?.role === 'executor' ? routes.tasks : routes.objects} replace />;
 };
