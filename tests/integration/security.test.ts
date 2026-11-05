@@ -232,3 +232,51 @@ describe('история и комментарии', () => {
     expect(data).toEqual([]);
   });
 });
+
+describe('роль нельзя присвоить себе', () => {
+  it('исполнитель не может записать себе роль постановщика в profiles', async () => {
+    const { data, error } = await kovalev
+      .from('profiles')
+      .update({ role: 'manager' })
+      .eq('id', USERS.kovalev.id)
+      .select();
+    expect(error?.code).toBe('42501');
+    expect(data ?? []).toHaveLength(0);
+  });
+
+  it('роль в user_metadata (её пользователь меняет сам) ни на что не влияет', async () => {
+    const client = await signIn('kovalev');
+    const { error: metaError } = await client.auth.updateUser({ data: { role: 'manager' } });
+    expect(metaError).toBeNull();
+    await client.auth.refreshSession();
+
+    const { data: profile } = await client
+      .from('profiles')
+      .select('role')
+      .eq('id', USERS.kovalev.id)
+      .single();
+    expect(profile?.role).toBe('executor');
+
+    // Права по-прежнему исполнительские: создать объект нельзя, чужого не видно.
+    const insert = await client.from('objects').insert({ name: 'x', address: 'y' });
+    expect(insert.error?.code).toBe('42501');
+    const { data: tasks } = await client.from('tasks').select('assignee_id');
+    expect(tasks?.every((t) => t.assignee_id === USERS.kovalev.id)).toBe(true);
+
+    await client.auth.updateUser({ data: { role: null } });
+  });
+
+  it('исполнитель не может создать себе профиль или удалить чужой', async () => {
+    const insert = await kovalev
+      .from('profiles')
+      .insert({ id: USERS.kovalev.id, full_name: 'x', role: 'manager' });
+    expect(insert.error?.code).toBe('42501');
+    const remove = await kovalev.from('profiles').delete().eq('id', USERS.orlov.id);
+    expect(remove.error?.code).toBe('42501');
+  });
+
+  it('служебные функции базы нельзя вызвать через API', async () => {
+    const { error } = await kovalev.rpc('handle_new_user' as never);
+    expect(error).not.toBeNull();
+  });
+});
