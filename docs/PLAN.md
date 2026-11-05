@@ -98,7 +98,7 @@
 ### 8. Деплой — ждёт пользователя
 
 - [x] `vercel.json`: SPA-переходы, заголовки безопасности, кэш статики
-- [ ] накатить миграции и сид в облачный Supabase (`supabase login` → `link` → `db push --include-seed` → `config push`)
+- [x] миграции и сид в облачном Supabase, регистрация выключена (`config push`), интеграционные тесты против облака — 15/15
 - [ ] подключить репозиторий к Vercel, задать `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_KEY`
 
 ### 9. Сдача
