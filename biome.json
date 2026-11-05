@@ -32,7 +32,12 @@
         "useHookAtTopLevel": "error"
       },
       "suspicious": {
-        "noConsole": { "level": "warn", "options": { "allow": ["error", "warn"] } }
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["error", "warn"]
+          }
+        }
       }
     }
   },
@@ -55,6 +60,11 @@
       "source": {
         "organizeImports": "on"
       }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
     }
   }
 }

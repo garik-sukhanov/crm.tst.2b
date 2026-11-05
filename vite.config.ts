@@ -1,9 +1,10 @@
 import { fileURLToPath, URL } from 'node:url';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: { port: 5180, strictPort: true },
   preview: { port: 5180, strictPort: true },
   resolve: {

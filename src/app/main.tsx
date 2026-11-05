@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Toaster } from '@/shared/ui/sonner';
 import { AppRouter } from './routing/router';
 import './styles/index.css';
 
@@ -9,5 +10,6 @@ if (!root) throw new Error('Не найден элемент #root');
 createRoot(root).render(
   <StrictMode>
     <AppRouter />
+    <Toaster position="top-center" />
   </StrictMode>,
 );
