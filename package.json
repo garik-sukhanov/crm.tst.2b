@@ -21,7 +21,8 @@
     "test:db": "supabase test db",
     "db:start": "supabase start -x studio,imgproxy,vector,logflare,edge-runtime,supavisor,storage-api,mailpit",
     "db:reset": "supabase db reset",
-    "db:types": "supabase gen types typescript --local --schema public > src/shared/api/database.types.ts && biome format --write src/shared/api/database.types.ts"
+    "db:types": "supabase gen types typescript --local --schema public > src/shared/api/database.types.ts && biome format --write src/shared/api/database.types.ts",
+    "dev:local": "vite --mode localdb"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

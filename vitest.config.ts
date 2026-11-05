@@ -14,6 +14,11 @@ export default defineConfig({
           include: ['src/**/*.test.{ts,tsx}'],
           environment: 'happy-dom',
           setupFiles: ['./src/shared/lib/test/setup.ts'],
+          // Клиент Supabase создаётся, но в unit-тестах в сеть не ходит.
+          env: {
+            VITE_SUPABASE_URL: 'http://127.0.0.1:54321',
+            VITE_SUPABASE_PUBLISHABLE_KEY: 'unit-test',
+          },
         },
       },
       {

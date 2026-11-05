@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ApiError, toApiError, unwrap } from './errors';
+import { ApiError, ensureOk, toApiError, unwrap } from './errors';
 
 describe('toApiError', () => {
   it('переводит коды бизнес-правил базы', () => {
@@ -36,5 +36,21 @@ describe('unwrap', () => {
 
   it('бросает ApiError', () => {
     expect(() => unwrap({ data: null, error: { code: 'CRM01' } })).toThrow(ApiError);
+  });
+});
+
+describe('ensureOk', () => {
+  it('пропускает ответ без данных (insert без select)', () => {
+    expect(() => ensureOk({ error: null })).not.toThrow();
+  });
+
+  it('бросает при ошибке', () => {
+    expect(() => ensureOk({ error: { code: '42501' } })).toThrow('Недостаточно прав');
+  });
+});
+
+describe('unwrap без данных', () => {
+  it('считает пустой ответ ненайденной записью', () => {
+    expect(() => unwrap({ data: null, error: null })).toThrow(ApiError);
   });
 });

@@ -1,7 +1,14 @@
-import { Building2Icon, ListChecksIcon } from 'lucide-react';
+import { BarChart3Icon, Building2Icon, ListChecksIcon, type LucideIcon } from 'lucide-react';
+import type { AppRole } from '@/shared/api';
 import { routes } from '@/shared/config';
 
-export const NAV_ITEMS = [
-  { to: routes.objects, label: 'Объекты', icon: Building2Icon },
-  { to: routes.myTasks, label: 'Мои задачи', icon: ListChecksIcon },
-] as const;
+type NavItem = { to: string; label: string; icon: LucideIcon };
+
+const objects: NavItem = { to: routes.objects, label: 'Объекты', icon: Building2Icon };
+const myTasks: NavItem = { to: routes.myTasks, label: 'Мои задачи', icon: ListChecksIcon };
+const statistics: NavItem = { to: routes.statistics, label: 'Статистика', icon: BarChart3Icon };
+
+export const NAV_BY_ROLE: Record<AppRole, NavItem[]> = {
+  manager: [objects, statistics],
+  executor: [myTasks, objects, statistics],
+};

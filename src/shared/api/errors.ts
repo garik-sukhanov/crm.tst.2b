@@ -37,7 +37,16 @@ export const toApiError = (error: unknown): ApiError => {
 };
 
 /** Развернуть ответ supabase-js: вернуть data или бросить ApiError. */
-export const unwrap = <T>(result: { data: T; error: unknown }): T => {
+export const unwrap = <R extends { data: unknown; error: unknown }>(
+  result: R,
+): NonNullable<R['data']> => {
   if (result.error) throw toApiError(result.error);
-  return result.data;
+  if (result.data === null)
+    throw new ApiError(MESSAGES.PGRST116 ?? 'Запись не найдена', 'PGRST116');
+  return result.data as NonNullable<R['data']>;
+};
+
+/** Для запросов без возвращаемых данных (insert/update без select): бросить только при ошибке. */
+export const ensureOk = (result: { error: unknown }): void => {
+  if (result.error) throw toApiError(result.error);
 };
