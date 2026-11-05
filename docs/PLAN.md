@@ -100,7 +100,8 @@
 - [x] `vercel.json`: SPA-переходы, заголовки безопасности, кэш статики
 - [x] миграции и сид в облачном Supabase, регистрация выключена (`config push`), интеграционные тесты против облака — 15/15
 - [x] `netlify.toml`: сборка, SPA-переходы, заголовки безопасности
-- [x] сайт https://crm-stroy-tasks.netlify.app, переменные заданы, выложено через Netlify CLI
+- [x] сайт https://crm-stroy-tasks.netlify.app, переменные заданы
+- [x] автодеплой: Netlify подключён к GitHub, push в `main` выкладывается сам
 - [x] адрес сайта прописан в Supabase (Site URL)
 
 ### 9. Сдача

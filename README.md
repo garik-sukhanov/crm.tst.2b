@@ -126,7 +126,9 @@ pnpm supabase config push
 
 ## Деплой на Netlify
 
-Netlify → Add new site → Import an existing project → GitHub → этот репозиторий. Настройки сборки, переходы для SPA и заголовки безопасности возьмутся из [netlify.toml](netlify.toml). В Site configuration → Environment variables задайте `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_KEY` и перезапустите деплой. Затем в Supabase укажите адрес сайта: Authentication → URL Configuration → Site URL.
+Сайт https://crm-stroy-tasks.netlify.app подключён к этому репозиторию: каждый push в `main` выкладывается сам, для pull request Netlify собирает превью. Настройки сборки, переходы для SPA и заголовки безопасности лежат в [netlify.toml](netlify.toml). Переменные `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_KEY` заданы в Netlify → Site configuration → Environment variables.
+
+Для своего сайта: Netlify → Add new site → Import an existing project → GitHub → этот репозиторий. Задайте те же две переменные, а в Supabase укажите адрес сайта: Authentication → URL Configuration → Site URL.
 
 ## Деплой на Vercel (альтернатива)
 
