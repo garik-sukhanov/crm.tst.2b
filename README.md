@@ -70,7 +70,11 @@ pnpm supabase config push
 
 Фронтенду нужны только публичные значения: скопируйте [.env.example](.env.example) в `.env.local` и заполните. Секретный ключ (`service_role` / `sb_secret_…`) во фронтенд и в репозиторий не попадает.
 
-## Деплой на Vercel
+## Деплой на Netlify
+
+Netlify → Add new site → Import an existing project → GitHub → этот репозиторий. Настройки сборки, переходы для SPA и заголовки безопасности возьмутся из [netlify.toml](netlify.toml). В Site configuration → Environment variables задайте `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_KEY` и перезапустите деплой. Затем в Supabase укажите адрес сайта: Authentication → URL Configuration → Site URL.
+
+## Деплой на Vercel (альтернатива)
 
 Подключите репозиторий и задайте переменные окружения `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_KEY`. Остальное — сборка, переходы для SPA, заголовки безопасности — описано в [vercel.json](vercel.json).
 

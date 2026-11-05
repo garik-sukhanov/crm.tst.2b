@@ -99,7 +99,9 @@
 
 - [x] `vercel.json`: SPA-переходы, заголовки безопасности, кэш статики
 - [x] миграции и сид в облачном Supabase, регистрация выключена (`config push`), интеграционные тесты против облака — 15/15
-- [ ] подключить репозиторий к Vercel, задать `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_KEY`
+- [x] `netlify.toml`: сборка, SPA-переходы, заголовки безопасности
+- [ ] подключить репозиторий к Netlify, задать `VITE_SUPABASE_URL` и `VITE_SUPABASE_PUBLISHABLE_KEY`
+- [ ] указать адрес сайта в Supabase (Site URL)
 
 ### 9. Сдача
 
