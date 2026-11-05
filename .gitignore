@@ -14,3 +14,4 @@ supabase/.temp
 !.vscode/settings.json
 .idea
 *.local
+!.env.localdb

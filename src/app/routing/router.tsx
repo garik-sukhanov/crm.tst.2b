@@ -1,14 +1,31 @@
+import { lazy, Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import { LoginPage } from '@/pages/login';
-import { MyTasksPage } from '@/pages/my-tasks';
-import { NotFoundPage } from '@/pages/not-found';
-import { ObjectBoardPage } from '@/pages/object-board';
-import { ObjectsPage } from '@/pages/objects';
-import { StatisticsPage } from '@/pages/statistics';
-import { TaskPage } from '@/pages/task';
 import { routes } from '@/shared/config';
 import { AppShell } from '@/widgets/app-shell';
 import { ExecutorOnly, HomeRedirect, RedirectIfAuthenticated, RequireAuth } from './guards';
+
+// Страницы грузятся по требованию: вход открывается быстро даже на слабом мобильном интернете.
+const ObjectsPage = lazy(() => import('@/pages/objects').then((m) => ({ default: m.ObjectsPage })));
+const ObjectBoardPage = lazy(() =>
+  import('@/pages/object-board').then((m) => ({ default: m.ObjectBoardPage })),
+);
+const TaskPage = lazy(() => import('@/pages/task').then((m) => ({ default: m.TaskPage })));
+const MyTasksPage = lazy(() =>
+  import('@/pages/my-tasks').then((m) => ({ default: m.MyTasksPage })),
+);
+const StatisticsPage = lazy(() =>
+  import('@/pages/statistics').then((m) => ({ default: m.StatisticsPage })),
+);
+const NotFoundPage = lazy(() =>
+  import('@/pages/not-found').then((m) => ({ default: m.NotFoundPage })),
+);
+
+const page = (Page: React.ComponentType) => (
+  <Suspense fallback={null}>
+    <Page />
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
@@ -22,15 +39,15 @@ const router = createBrowserRouter([
         element: <AppShell />,
         children: [
           { path: routes.root, element: <HomeRedirect /> },
-          { path: routes.objects, element: <ObjectsPage /> },
-          { path: '/objects/:objectId', element: <ObjectBoardPage /> },
-          { path: '/tasks/:taskId', element: <TaskPage /> },
+          { path: routes.objects, element: page(ObjectsPage) },
+          { path: '/objects/:objectId', element: page(ObjectBoardPage) },
+          { path: '/tasks/:taskId', element: page(TaskPage) },
           {
             element: <ExecutorOnly />,
-            children: [{ path: routes.myTasks, element: <MyTasksPage /> }],
+            children: [{ path: routes.myTasks, element: page(MyTasksPage) }],
           },
-          { path: routes.statistics, element: <StatisticsPage /> },
-          { path: '*', element: <NotFoundPage /> },
+          { path: routes.statistics, element: page(StatisticsPage) },
+          { path: '*', element: page(NotFoundPage) },
         ],
       },
     ],
